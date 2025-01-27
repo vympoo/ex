@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Таблица с случайными числами</title>
+<style>
+table {
+border-collapse: collapse;
+width: 100%;
+}
+th, td {
+border: 1px solid black;
+padding: 8px;
+text-align: center;
+}
+.orange {
+background-color: orange;
+}
+</style>
+</head>
+<body>
+<h2>Таблица с случайными числами</h2>
+<table id="randomTable">
+<!-- Таблица будет заполнена скриптом -->
+</table>
+<button onclick="addNumber()">Добавить число</button>
+<script>
+// Функция для создания массива с 30 случайными числами
+function createRandomArray() {
+let arr = [];
+for (let i = 0; i < 30; i++) {
+arr.push(Math.floor(Math.random() * 100));
+}
+return arr;
+}
+// Функция для заполнения таблицы
+function fillTable() {
+let arr = createRandomArray();
+let table = document.getElementById('randomTable');
+let index = 0;
+for (let i = 0; i < 5; i++) {
+let row = table.insertRow();
+for (let j = 0; j < 6; j++) {
+let cell = row.insertCell();
+let num = arr[index++];
+cell.textContent = num;
+if (num >= 50) {
+cell.classList.add('orange');
+}
+}
+}
+}
+// Функция для добавления нового числа
+function addNumber() {
+let newNumber = Math.floor(Math.random() * 100);
+let table = document.getElementById('randomTable');
+let rows = table.rows;
+// Удаляем первое число из таблицы
+let firstCell = rows[0].cells[0];
+firstCell.textContent = '';
+firstCell.classList.remove('orange');
+// Сдвигаем все числа влево
+for (let i = 0; i < rows.length; i++) {
+for (let j = 0; j < rows[i].cells.length - 1; j++) {
+rows[i].cells[j].textContent = rows[i].cells[j + 1].textContent;
+if (rows[i].cells[j + 1].classList.contains('orange')) {
+rows[i].cells[j].classList.add('orange');
+} else {
+rows[i].cells[j].classList.remove('orange');
+}
+}
+}
+// Добавляем новое число в последнюю ячейку
+let lastRow = rows[rows.length - 1];
+let lastCell = lastRow.cells[lastRow.cells.length - 1];
+lastCell.textContent = newNumber;
+if (newNumber >= 50) {
+lastCell.classList.add('orange');
+} else {
+lastCell.classList.remove('orange');
+}
+}
+// Заполняем таблицу при загрузке страницы
+fillTable();
+</script>
+</body>
+</html>
